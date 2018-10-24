@@ -9,8 +9,9 @@ import xgboost as xgb
 
 class RegressionModel(object):
     """
-        Instance class represents set of raw data collected per subject
+        Instance class represents a regression model
     """
+
 
     def __init__(self, feature_set, name , type , hyper_parameters=None):
         self.feature_set = feature_set
@@ -21,7 +22,10 @@ class RegressionModel(object):
 
     def _get_model(self ):
 
-
+        '''
+        initialize the regression model
+        :return: regression model to use
+        '''
         if self.type == 'rfr':
             model = RandomForestRegressor(n_estimators=self.hyper_parameters['n_estimators']
                                           , max_depth=self.hyper_parameters['max_depth'],
@@ -47,6 +51,10 @@ class RegressionModel(object):
 
 
 def get_gyro_x_features():
+    '''
+    :return: gyroscope X axis features
+    '''
+
     return ['Gyro X Location First Maxima 0-250 ms',
                     'Gyro X Width First Maxima 0-250 ms',
                     'Gyro X Location Second Maxima 0-250 ms',
@@ -61,6 +69,9 @@ def get_gyro_x_features():
                     'Gyro X Width First Minima 250-500 ms']
 
 def get_gyro_y_features():
+    '''
+    :return: gyroscope Y axis features
+    '''
 
     return ['Gyro Y Location First Maxima 0-250 ms',
                     'Gyro Y Width First Maxima 0-250 ms',
@@ -76,6 +87,9 @@ def get_gyro_y_features():
                     'Gyro Y Width First Minima 250-500 ms']
 
 def get_gyro_z_features():
+    '''
+    :return: gyroscope Z axis features
+    '''
 
     return['Gyro Z Location First Maxima 0-250 ms',
                     'Gyro Z Width First Maxima 0-250 ms',
@@ -91,6 +105,10 @@ def get_gyro_z_features():
                     'Gyro Z Width First Minima 250-500 ms']
 
 def get_acc_x_features():
+    '''
+    :return:accelerometer X axis features
+    '''
+
     return ['ACC X Location First Maxima 0-250 ms',
                     'ACC X Width First Maxima 0-250 ms',
                     'ACC X Location Second Maxima 0-250 ms',
@@ -105,6 +123,9 @@ def get_acc_x_features():
                     'ACC X Width First Minima 250-500 ms']
 
 def get_acc_y_features():
+    '''
+    :return: accelerometer Y axis features
+    '''
     return ['ACC Y Location First Maxima 0-250 ms',
                     'ACC Y Width First Maxima 0-250 ms',
                     'ACC Y Location Second Maxima 0-250 ms',
@@ -119,6 +140,9 @@ def get_acc_y_features():
                     'ACC Y Width First Minima 250-500 ms']
 
 def get_acc_z_features():
+    '''
+    :return: accelerometer Z axis features
+    '''
     return ['ACC Z Location First Maxima 0-250 ms',
                     'ACC Z Width First Maxima 0-250 ms',
                     'ACC Z Location Second Maxima 0-250 ms',
@@ -133,6 +157,9 @@ def get_acc_z_features():
                     'ACC Z Width First Minima 250-500 ms']
 
 def get_bcg_features():
+    '''
+    :return: ballistocardiogram features
+    '''
     return [
                'R-I interval',
                'R-J Interval',
@@ -141,8 +168,11 @@ def get_bcg_features():
 
 
 
-#seperate the subjects into random groups of two
 def seperate_subjects_into_cv_groups(subjectIDs , rnd):
+    '''
+    seperate the subjects into random groups of two for repeated cross-validation
+    '''
+
     #shuffle subjects
     uniqueSubjectIDs = np.unique(subjectIDs)
     rnd.shuffle(uniqueSubjectIDs)
@@ -158,9 +188,14 @@ def seperate_subjects_into_cv_groups(subjectIDs , rnd):
 
     return groups
 
-#function to evaluate a feature set using xgboost and repeated CV
 def cross_validate_rmse(data_frame, N_repetitions , regr_model_instance):
-
+    '''
+    function to evaluate a feature set using xgboost and repeated CV
+    :param data_frame: pandas data frame containing all data
+    :param N_repetitions: number of repetitions of cross-validation to perform
+    :param regr_model_instance: regression model instance
+    :return:
+    '''
     #get the data set
     X = data_frame[regr_model_instance.feature_set].values
     y = data_frame['PEP'].values
