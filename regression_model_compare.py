@@ -43,8 +43,6 @@ def main():
 
     #set up experiment: number of rounds CV is repeated and the feature set
     N_repetitions= args['N_repetitions']
-
-    #features to use
     axis_combination = args['axis_combo'].split(',')
 
     feature_set = []
