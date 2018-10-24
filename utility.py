@@ -12,7 +12,6 @@ class RegressionModel(object):
         Instance class represents a regression model
     """
 
-
     def __init__(self, feature_set, name , type , hyper_parameters=None):
         self.feature_set = feature_set
         self.name =  name
@@ -21,7 +20,6 @@ class RegressionModel(object):
         self.model = self._get_model()
 
     def _get_model(self ):
-
         '''
         initialize the regression model
         :return: regression model to use
@@ -54,7 +52,6 @@ def get_gyro_x_features():
     '''
     :return: gyroscope X axis features
     '''
-
     return ['Gyro X Location First Maxima 0-250 ms',
                     'Gyro X Width First Maxima 0-250 ms',
                     'Gyro X Location Second Maxima 0-250 ms',
@@ -72,7 +69,6 @@ def get_gyro_y_features():
     '''
     :return: gyroscope Y axis features
     '''
-
     return ['Gyro Y Location First Maxima 0-250 ms',
                     'Gyro Y Width First Maxima 0-250 ms',
                     'Gyro Y Location Second Maxima 0-250 ms',
@@ -90,7 +86,6 @@ def get_gyro_z_features():
     '''
     :return: gyroscope Z axis features
     '''
-
     return['Gyro Z Location First Maxima 0-250 ms',
                     'Gyro Z Width First Maxima 0-250 ms',
                     'Gyro Z Location Second Maxima 0-250 ms',
@@ -108,7 +103,6 @@ def get_acc_x_features():
     '''
     :return:accelerometer X axis features
     '''
-
     return ['ACC X Location First Maxima 0-250 ms',
                     'ACC X Width First Maxima 0-250 ms',
                     'ACC X Location Second Maxima 0-250 ms',
@@ -172,7 +166,6 @@ def seperate_subjects_into_cv_groups(subjectIDs , rnd):
     '''
     seperate the subjects into random groups of two for repeated cross-validation
     '''
-
     #shuffle subjects
     uniqueSubjectIDs = np.unique(subjectIDs)
     rnd.shuffle(uniqueSubjectIDs)

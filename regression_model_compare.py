@@ -30,28 +30,22 @@ def main():
 
     arg('--axis_combo', type=str , help='Sensors and axis to use, e.g. use only accelerometer z axis: az, use a combination of accelerometer Z and gyroscope X axes: aZ,gX ')
 
-
-    # args = parser.parse_args()
     args = vars(parser.parse_args())
-    print(args)
-
-    plt.show(block=False)
-
 
     #read dataset
     data_frame = pd.read_csv(args['csv_file'])
 
-    #there are many Nan's in the data, get rid of them
+    #get rid of NaN's due to feature extraction
     data_frame=data_frame.dropna(axis= 'index' , how='any')
 
-    #get rid of very high PEP values
+    #get rid of very high PEP values (outliers)
     data_frame=data_frame[data_frame['PEP']<200]
 
     #set up experiment: number of rounds CV is repeated and the feature set
     N_repetitions= args['N_repetitions']
 
+    #features to use
     axis_combination = args['axis_combo'].split(',')
-    print(axis_combination)
 
     feature_set = []
     if 'gX' in axis_combination:
@@ -67,7 +61,7 @@ def main():
     if 'aZ' in axis_combination:
         feature_set += utility.get_acc_z_features()
 
-
+    #models to test
     list_of_models = [
 
     utility.RegressionModel(feature_set=feature_set, name='xgb model' , type='xgb' ,
@@ -109,6 +103,7 @@ def main():
                             })
     ]
 
+    #run experiments
     scores = []
     list_regr_name = []
     list_model_type = []
@@ -119,8 +114,8 @@ def main():
             list_regr_name.append(regr_model.name)
             list_model_type.append('Non-linear' if regr_model.type not in ['linr' , 'ridr', 'lasr'] else 'Linear')
 
+    #add results to a data frame
     dfr_rmse_results = pd.DataFrame(data={'rmse': scores , 'Regressor':list_regr_name , 'Regression Type':list_model_type})
-
 
     #construct barplot
     fig = plt.figure(figsize=(12,8));
