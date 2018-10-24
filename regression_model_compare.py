@@ -6,6 +6,8 @@ import utility
 import argparse
 
 def main():
+
+    #config
     parser = argparse.ArgumentParser()
     arg = parser.add_argument
     arg('--xgb_eta', default=0.1, type=float, help='Eta for the xgboost regressor')
@@ -13,23 +15,15 @@ def main():
     arg('--xgb_subsample', default=0.5, type=float , help='Subsample rate for the xgboost regressor' )
     arg('--xgb_colsample_bytree', default=0.5, type=float , help='Feature subsampling rate for the xgboost regressor')
     arg('--xgb_num_boost_round', default=10, type=int , help='Number of boosting rounds for the xgboost regressor')
-
     arg('--rfr_max_depth', default=5, type=int , help='Max depth for the random forest regressor')
     arg('--rfr_n_estimators', default=10, type=int , help='Number of trees for the random forest regressor')
-
     arg('--et_max_depth', default=5, type=int , help='Max depth for the extra trees regressor')
     arg('--et_n_estimators', default=10, type=int , help='Number of trees for the extra trees regressor')
-
     arg('--ridge_alpha', default=1, type=float , help='Alpha for ridge regression')
-
     arg('--lasso_alpha', default=1, type=float , help='Alpha for lasso regression')
-
     arg('--N_repetitions', type=int , help='Number of cross-validation repetitions')
-
     arg('--csv_file', type=str , help='File containing all features extracted from the signals')
-
     arg('--axis_combo', type=str , help='Sensors and axis to use, e.g. use only accelerometer z axis: az, use a combination of accelerometer Z and gyroscope X axes: aZ,gX ')
-
     args = vars(parser.parse_args())
 
     #read dataset
@@ -132,7 +126,7 @@ def main():
     ax.spines['bottom'].set_linewidth(0.5)
     plt.title(args['axis_combo'])
     plt.ylim(0,22)
-    fig.savefig(args['axis_combo'], dpi=fig.dpi)
+    fig.savefig(args['axis_combo'], dpi=200)
 
 
 if __name__ == '__main__':
