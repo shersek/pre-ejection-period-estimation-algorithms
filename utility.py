@@ -283,7 +283,6 @@ def cross_validate_rmse(data_frame, N_repetitions , regr_model_instance):
     tq.close()
 
     #print results
-    print(regr_model_instance.name)
     print('RMSE= ' + str(np.mean(np.asarray(score_vector_rmse))) + ' +/- ' + str(np.std(np.asarray(score_vector_rmse))))
 
     return score_vector_rmse
