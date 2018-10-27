@@ -6,6 +6,7 @@ from scipy import signal
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import LeaveOneGroupOut
 import xgboost as xgb
+import tqdm
 
 class RegressionModel(object):
     """
@@ -169,7 +170,7 @@ def seperate_subjects_into_cv_groups(subjectIDs , rnd):
     #shuffle subjects
     uniqueSubjectIDs = np.unique(subjectIDs)
     rnd.shuffle(uniqueSubjectIDs)
-    print(uniqueSubjectIDs)
+    #print(uniqueSubjectIDs)
     uniqueGroups = np.repeat(np.arange(uniqueSubjectIDs.shape[0]/2), 2).astype(int)
 
     #assign subjects to groups
@@ -214,10 +215,10 @@ def cross_validate_rmse(data_frame, N_repetitions , regr_model_instance):
     #fix random seed to get consistent shuffles in each experiment
     rnd = np.random.RandomState(42) #fix random seed !
 
+    tq = tqdm.tqdm(total=(N_repetitions))
     for reps in np.arange(N_repetitions):
 
         #groups subjects into pairs randomly for CV grouping and set up CV
-        print(reps)
         groups_cv = seperate_subjects_into_cv_groups(subjectIDs , rnd)
         logo = LeaveOneGroupOut()
 
@@ -270,16 +271,16 @@ def cross_validate_rmse(data_frame, N_repetitions , regr_model_instance):
             #add predictions to the out of fold predictions vector
             y_all_predictions[test] = y_predicted
 
-        #calculate rmse for this repetition
-        print(np.any(np.isnan(y)))
-        print(np.any(np.isnan(y_all_predictions)))
-        print(np.any(np.isinf(y)))
-        print(np.any(np.isinf(y_all_predictions)))
-        rmse = np.sqrt(mean_squared_error(y, y_all_predictions))
 
+        #calculate rmse for this repetition
+        rmse = np.sqrt(np.nanmean(np.power(y - y_all_predictions , 2 )))
 
         #add the rmse from this repetition to a vector
         score_vector_rmse.append(rmse)
+
+        tq.update(1)
+
+    tq.close()
 
     #print results
     print(regr_model_instance.name)
