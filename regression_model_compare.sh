@@ -17,7 +17,7 @@ for i in 'gX' 'gY' 'gZ' 'aX' 'aY' 'aZ' 'gX,gY' 'gX,gZ' 'gY,gZ' 'gX,gY,gZ' 'aX,aY
 	--ridge_alpha 1 \
 	--lasso_alpha 1 \
 	--axis_combo $i \
-	--N_repetitions 5
+	--N_repetitions 50
 
 	done
 
