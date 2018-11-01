@@ -57,7 +57,7 @@ for combination in axis_combinations:
                             'subsample': 0.5,
                             'objective': 'reg:linear',
                             'colsample_bytree': 0.5,
-                            'num_boost_round':10
+                            'num_boost_round':200
 
                         })   )
 
